@@ -14,7 +14,7 @@ $ npm install --save litedb
 ## connect
 ```javascript
 
-var db = require('liteDB');
+var db = require('litedb');
 db.connect('./db',["users"]);
 db.connect(['accounts']);
 
