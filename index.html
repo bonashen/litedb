@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Litedb by bonashen</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Litedb</h1>
+      <h2 class="project-tagline">lite db for json object.</h2>
+      <a href="https://github.com/bonashen/litedb" class="btn">View on GitHub</a>
+      <a href="https://github.com/bonashen/litedb/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/bonashen/litedb/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="litedb" class="anchor" href="#litedb" aria-hidden="true"><span class="octicon octicon-link"></span></a>litedb</h1>
+
+<p>litedb for store json objects  to disk.it's a little db.
+support query like moongodb,support <strong>crud,stored,trigger,total.</strong> </p>
+
+<h2>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation</h2>
+
+<div class="highlight highlight-bash"><pre>
+$ npm install --save litedb
+</pre></div>
+
+<h2>
+<a id="connect" class="anchor" href="#connect" aria-hidden="true"><span class="octicon octicon-link"></span></a>connect</h2>
+
+<div class="highlight highlight-javascript"><pre>
+<span class="pl-k">var</span> db <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>litedb<span class="pl-pds">'</span></span>);
+db.<span class="pl-c1">connect</span>(<span class="pl-s"><span class="pl-pds">'</span>./db<span class="pl-pds">'</span></span>,[<span class="pl-s"><span class="pl-pds">"</span>users<span class="pl-pds">"</span></span>]);
+db.<span class="pl-c1">connect</span>([<span class="pl-s"><span class="pl-pds">'</span>accounts<span class="pl-pds">'</span></span>]);
+
+</pre></div>
+
+<h2>
+<a id="trigger" class="anchor" href="#trigger" aria-hidden="true"><span class="octicon octicon-link"></span></a>trigger</h2>
+
+<div class="highlight highlight-javascript"><pre>
+<span class="pl-c">//create trigger</span>
+
+db.<span class="pl-c1">util</span>.<span class="pl-c1">trigger</span>(<span class="pl-s"><span class="pl-pds">"</span>beforeUserSave<span class="pl-pds">"</span></span>, <span class="pl-k">function</span>(<span class="pl-smi">user</span>) {
+    user.<span class="pl-c1">age</span> <span class="pl-k">=</span> <span class="pl-c1">38</span>;
+    user.<span class="pl-c1">mail</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>bona shen@gmail.com<span class="pl-pds">"</span></span>;
+});
+
+<span class="pl-c">//assemble trigger for db.users</span>
+
+db.<span class="pl-c1">beforeUserSave</span>.<span class="pl-c1">assemble</span>(db.<span class="pl-c1">users</span>, <span class="pl-s"><span class="pl-pds">"</span>beforeSaveTrigger<span class="pl-pds">"</span></span>);
+
+<span class="pl-c">//drop trigger</span>
+db.<span class="pl-c1">beforeUserSave</span>.<span class="pl-c1">drop</span>();
+</pre></div>
+
+<h2>
+<a id="listen-event" class="anchor" href="#listen-event" aria-hidden="true"><span class="octicon octicon-link"></span></a>listen event</h2>
+
+<div class="highlight highlight-javascript"><pre>
+db.<span class="pl-c1">events</span>.<span class="pl-c1">on</span>(<span class="pl-s"><span class="pl-pds">"</span>collection/onSave<span class="pl-pds">"</span></span>, <span class="pl-k">function</span>(<span class="pl-smi">evt</span>) {
+    <span class="pl-en">console</span><span class="pl-c1">.log</span>(<span class="pl-s"><span class="pl-pds">"</span>collection/onSave<span class="pl-pds">"</span></span>);
+});
+</pre></div>
+
+<h2>
+<a id="save-json" class="anchor" href="#save-json" aria-hidden="true"><span class="octicon octicon-link"></span></a>save json</h2>
+
+<div class="highlight highlight-javascript"><pre>
+db.<span class="pl-c1">users</span>.<span class="pl-c1">save</span>({
+    name<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>bona shen<span class="pl-pds">"</span></span>,
+    comments<span class="pl-k">:</span> [<span class="pl-s"><span class="pl-pds">"</span>peter's Father<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>kerry's father<span class="pl-pds">"</span></span>]
+});
+
+db.<span class="pl-c1">users</span>.<span class="pl-c1">save</span>({
+    name<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>ychunx<span class="pl-pds">"</span></span>,
+    comments<span class="pl-k">:</span> [<span class="pl-s"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>kerry's mather<span class="pl-pds">"</span></span>,<span class="pl-s"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>],
+    age<span class="pl-k">:</span><span class="pl-c1">35</span>
+});
+</pre></div>
+
+<h2>
+<a id="query" class="anchor" href="#query" aria-hidden="true"><span class="octicon octicon-link"></span></a>query</h2>
+
+<div class="highlight highlight-javascript"><pre>
+db.<span class="pl-c1">users</span>.<span class="pl-c1">find</span>({
+    age<span class="pl-k">:</span> {
+        $gt<span class="pl-k">:</span> <span class="pl-c1">30</span>
+    }
+}).<span class="pl-c1">forEach</span>(<span class="pl-k">function</span>(<span class="pl-smi">o</span>) {
+    <span class="pl-en">console</span><span class="pl-c1">.log</span>(o);
+});
+
+<span class="pl-en">console</span><span class="pl-c1">.log</span>(<span class="pl-s"><span class="pl-pds">"</span>find:<span class="pl-pds">"</span></span>, db.<span class="pl-c1">users</span>.<span class="pl-c1">find</span>({
+    comments<span class="pl-k">:</span><span class="pl-sr"> <span class="pl-pds">/</span>mather<span class="pl-pds">/</span></span>
+}));
+</pre></div>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/bonashen/litedb">Litedb</a> is maintained by <a href="https://github.com/bonashen">bonashen</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
